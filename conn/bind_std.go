@@ -157,7 +157,7 @@ again:
 	var v6pc *ipv6.PacketConn
 
 	v4conn, port, err = listenNet("udp4", port)
-	if err != nil && !errors.Is(err, syscall.EAFNOSUPPORT) {
+	if err != nil && !errors.Is(err, syscall.EAFNOSUPPORT) && !errors.Is(err, syscall.EPROTONOSUPPORT) {
 		return nil, 0, err
 	}
 
@@ -168,7 +168,7 @@ again:
 		tries++
 		goto again
 	}
-	if err != nil && !errors.Is(err, syscall.EAFNOSUPPORT) {
+	if err != nil && !errors.Is(err, syscall.EAFNOSUPPORT) && !errors.Is(err, syscall.EPROTONOSUPPORT) {
 		v4conn.Close()
 		return nil, 0, err
 	}
